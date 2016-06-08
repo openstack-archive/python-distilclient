@@ -1,0 +1,7 @@
+CHANGES
+=======
+
+* Add cli command: distil
+* Update readme.rst
+* Fix the old requirements and increate the version
+* Init commit
