@@ -1,0 +1,8 @@
+Code-Review+2: Lingxian Kong <anlin.kong@gmail.com>
+Workflow+1: Lingxian Kong <anlin.kong@gmail.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Tue, 14 Jun 2016 01:27:35 +0000
+Reviewed-on: https://review.openstack.org/327415
+Project: openstack/python-distilclient
+Branch: refs/heads/master
