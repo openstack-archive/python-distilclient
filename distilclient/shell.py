@@ -12,24 +12,21 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-#!/usr/bin/env python
-
 import os
 import json
 import sys
 from client import Client
 import exc
 
-
-if __name__ == '__main__':
-    main(sys.argv[1:]) 
+from keystoneauth1.identity import generic
+from keystoneauth1 import session
 
 
 def main():
     import argparse
     parser = argparse.ArgumentParser()
 
-    #main args:
+    # main args:
     parser.add_argument('-k', '--insecure',
                         default=False,
                         action='store_true',
@@ -56,13 +53,33 @@ def main():
                         default=os.environ.get('OS_PASSWORD'),
                         help='Defaults to env[OS_PASSWORD]')
 
-    parser.add_argument('--os-tenant-id',
-                        default=os.environ.get('OS_TENANT_ID'),
-                        help='Defaults to env[OS_TENANT_ID]')
+    parser.add_argument('--os-project-id',
+                        default=os.environ.get(
+                            'OS_PROJECT_ID', os.environ.get(
+                                'OS_TENANT_ID')),
+                        help='Defaults to env[OS_PROJECT_ID]')
 
-    parser.add_argument('--os-tenant-name',
-                        default=os.environ.get('OS_TENANT_NAME'),
-                        help='Defaults to env[OS_TENANT_NAME]')
+    parser.add_argument('--os-project-name',
+                        default=os.environ.get(
+                            'OS_PROJECT_NAME', os.environ.get(
+                                'OS_TENANT_NAME')),
+                        help='Defaults to env[OS_PROJECT_NAME]')
+
+    parser.add_argument('--os-project-domain-id',
+                        default=os.environ.get('OS_PROJECT_DOMAIN_ID'),
+                        help='Defaults to env[OS_PROJECT_DOMAIN_ID]')
+
+    parser.add_argument('--os-project-domain-name',
+                        default=os.environ.get('OS_PROJECT_DOMAIN_NAME'),
+                        help='Defaults to env[OS_PROJECT_DOMAIN_NAME]')
+
+    parser.add_argument('--os-user-domain-id',
+                        default=os.environ.get('OS_USER_DOMAIN_ID'),
+                        help='Defaults to env[OS_USER_DOMAIN_ID]')
+
+    parser.add_argument('--os-user-domain-name',
+                        default=os.environ.get('OS_USER_DOMAIN_NAME'),
+                        help='Defaults to env[OS_USER_DOMAIN_NAME]')
 
     parser.add_argument('--os-auth-url',
                         default=os.environ.get('OS_AUTH_URL'),
@@ -72,9 +89,9 @@ def main():
                         default=os.environ.get('OS_REGION_NAME'),
                         help='Defaults to env[OS_REGION_NAME]')
 
-    parser.add_argument('--os-auth-token',
-                        default=os.environ.get('OS_AUTH_TOKEN'),
-                        help='Defaults to env[OS_AUTH_TOKEN]')
+    parser.add_argument('--os-token',
+                        default=os.environ.get('OS_TOKEN'),
+                        help='Defaults to env[OS_TOKEN]')
 
     parser.add_argument('--os-service-type',
                         help='Defaults to env[OS_SERVICE_TYPE].',
@@ -91,17 +108,17 @@ def main():
     # commands:
     subparsers = parser.add_subparsers(help='commands', dest='command')
 
-    usage_parser = subparsers.add_parser(
+    subparsers.add_parser(
         'collect-usage', help=('process usage for all tenants'))
 
-    last_collected_parser = subparsers.add_parser(
+    subparsers.add_parser(
         'last-collected', help=('get last collected time'))
 
     get_usage_parser = subparsers.add_parser(
         'get-usage', help=('get raw aggregated usage'))
 
     get_usage_parser.add_argument(
-        "-t", "--tenant", dest="tenant",
+        "-p", "--project", dest="project",
         help='Tenant to get usage for',
         required=True)
 
@@ -119,7 +136,7 @@ def main():
         'get-rated', help=('get rated usage'))
 
     get_rated_parser.add_argument(
-        "-t", "--tenant", dest="tenant",
+        "-p", "--project", dest="project",
         help='Tenant to get usage for',
         required=True)
 
@@ -134,41 +151,85 @@ def main():
 
     args = parser.parse_args()
 
-    if not (args.os_auth_token and args.distil_url):
+    if not (args.os_token and args.distil_url):
         if not args.os_username:
             raise exc.CommandError("You must provide a username via "
                                    "either --os-username or via "
                                    "env[OS_USERNAME]")
 
-        if not args.os_password:
-            raise exc.CommandError("You must provide a password via "
-                                   "either --os-password or via "
-                                   "env[OS_PASSWORD]")
-
-        if not (args.os_tenant_id or args.os_tenant_name):
-            raise exc.CommandError("You must provide a tenant_id via "
-                                   "either --os-tenant-id or via "
-                                   "env[OS_TENANT_ID]")
+        if not (args.os_project_id or args.os_project_name):
+            raise exc.CommandError(
+                "You must provide a a project id via either --os-project-id "
+                "or env[OS_PROJECT_ID] or a project name via "
+                "either --os-project-name or env[OS_PROJECT_NAME]")
 
         if not args.os_auth_url:
-            raise exc.CommandError("You must provide an auth url via "
-                                   "either --os-auth-url or via "
-                                   "env[OS_AUTH_URL]")
+            raise exc.CommandError(
+                "You must provide an auth url via "
+                "either --os-auth-url or via "
+                "env[OS_AUTH_URL]")
 
-    kwargs = vars(args)
+        if not args.os_password and not args.os_token:
+            raise exc.CommandError(
+                "You must provide a password via "
+                "either --os-password or via "
+                "env[OS_PASSWORD] or an auth token "
+                "via --os-token or env[OS_TOKEN]")
 
-    client = Client(kwargs.get('distil_url', None),
-                    kwargs.get('os_auth_token', None),
-                    kwargs.get('os_username', None),
-                    kwargs.get('os_password', None),
-                    kwargs.get('os_tenant_id', None),
-                    kwargs.get('os_tenant_name', None),
-                    kwargs.get('os_auth_url', None),
-                    kwargs.get('os_region_name', None),
-                    kwargs.get('os_cacert', None),
-                    kwargs.get('insecure', None),
-                    kwargs.get('os_service_type', None),
-                    kwargs.get('os_endpoint_type', None))
+    if args.insecure:
+        verify = False
+    else:
+        verify = args.os_cacert or True
+
+    if args.os_token and args.distil_url:
+        client = Client(
+            endpoint=args.distil_url,
+            token=args.os_token)
+    else:
+        if args.os_token:
+            kwargs = {
+                'token': args.os_token,
+                'auth_url': args.os_auth_url,
+                'username': args.os_username,
+                'project_id': args.os_project_id,
+                'project_name': args.os_project_name,
+                'project_domain_id': args.os_project_domain_id,
+                'project_domain_name': args.os_project_domain_name,
+            }
+            auth = generic.Token(**kwargs)
+            sess = session.Session(auth=auth, verify=verify)
+        else:
+            kwargs = {
+                'username': args.os_username,
+                'password': args.os_password,
+                'auth_url': args.os_auth_url,
+                'project_id': args.os_project_id,
+                'project_name': args.os_project_name,
+                'project_domain_id': args.os_project_domain_id,
+                'project_domain_name': args.os_project_domain_name,
+                'user_domain_id': args.os_user_domain_id,
+                'user_domain_name': args.os_user_domain_name,
+            }
+            auth = generic.Password(**kwargs)
+            sess = session.Session(auth=auth, verify=verify)
+
+        endpoint = auth.get_endpoint(
+            sess, service_type=args.os_service_type,
+            interface=args.os_endpoint_type, region_name=args.os_region_name)
+
+        kwargs = {
+            'endpoint': endpoint,
+            'auth_url': args.os_auth_url,
+            'session': sess,
+            'auth': auth,
+            'service_type': args.os_service_type,
+            'endpoint_type': args.os_endpoint_type,
+            'region_name': args.os_region_name,
+            'username': args.os_username,
+            'password': args.os_password,
+        }
+
+        client = Client(**kwargs)
 
     if args.command == 'collect-usage':
         response = client.collect_usage()
@@ -179,9 +240,13 @@ def main():
         print json.dumps(response, indent=2)
 
     if args.command == 'get-usage':
-        response = client.get_usage(args.tenant, args.start, args.end)
+        response = client.get_usage(args.project, args.start, args.end)
         print json.dumps(response, indent=2)
 
     if args.command == 'get-rated':
-        response = client.get_rated(args.tenant, args.start, args.end)
+        response = client.get_rated(args.project, args.start, args.end)
         print json.dumps(response, indent=2)
+
+
+if __name__ == '__main__':
+    main(sys.argv[1:])
