@@ -1,7 +1,4 @@
-
-#    Copyright 2012 OpenStack Foundation
-# Copyright 2015 Chuck Fouts
-# All Rights Reserved.
+# Copyright 2017 Catalyst IT Ltd.
 #
 #    Licensed under the Apache License, Version 2.0 (the "License"); you may
 #    not use this file except in compliance with the License. You may obtain
@@ -15,18 +12,16 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-__all__ = ['__version__']
-
-import pbr.version
-
-version_info = pbr.version.VersionInfo('python-distilclient')
-
-try:
-    __version__ = version_info.version_string()
-except AttributeError:
-    __version__ = None
+from distilclient import base
 
 
-API_MAX_VERSION = '1'
-API_MIN_VERSION = '2'
-API_DEPRECATED_VERSION = []
+class UsageManager(base.Manager):
+
+    def list(self, project_id, start, end):
+        """Retrieve a list of usages.
+        :returns: A list of usages.
+        """
+        url = "/v2/usage?project_id={0}&start={1}&end={2}".format(project_id,
+                                                                  start,
+                                                                  end)
+        return self._list(url, "usage")

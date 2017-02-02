@@ -1,6 +1,6 @@
+# Copyright 2010 Jacob Kaplan-Moss
 
-#    Copyright 2012 OpenStack Foundation
-# Copyright 2015 Chuck Fouts
+# Copyright 2011 OpenStack Foundation
 # All Rights Reserved.
 #
 #    Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -15,18 +15,19 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-__all__ = ['__version__']
+import mock
 
-import pbr.version
+from distilclient.common.apiclient import exceptions as client_exceptions
+from distilclient import exceptions
+from distilclient.tests.unit import utils
+from distilclient.tests.unit.v2 import fakes
+from distilclient.v2 import usage
 
-version_info = pbr.version.VersionInfo('python-distilclient')
-
-try:
-    __version__ = version_info.version_string()
-except AttributeError:
-    __version__ = None
+cs = fakes.FakeClient()
 
 
-API_MAX_VERSION = '1'
-API_MIN_VERSION = '2'
-API_DEPRECATED_VERSION = []
+class UsageTest(utils.TestCase):
+
+    # Testcases for class Share
+    def setUp(self):
+        super(UsageTest, self).setUp()
