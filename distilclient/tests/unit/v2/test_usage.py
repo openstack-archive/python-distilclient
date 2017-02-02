@@ -1,4 +1,7 @@
-# Copyright (C) 2014 Catalyst IT Ltd
+# Copyright 2010 Jacob Kaplan-Moss
+
+# Copyright 2011 OpenStack Foundation
+# All Rights Reserved.
 #
 #    Licensed under the Apache License, Version 2.0 (the "License"); you may
 #    not use this file except in compliance with the License. You may obtain
@@ -12,9 +15,11 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-import debtcollector
+from distilclient.tests.unit import utils
 
 
-@debtcollector.removals.removed_class("CommandError")
-class CommandError(BaseException):
-    """Invalid usage of CLI."""
+class UsageTest(utils.TestCase):
+
+    # Testcases for class Share
+    def setUp(self):
+        super(UsageTest, self).setUp()
