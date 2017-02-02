@@ -12,6 +12,9 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+import debtcollector
 
+
+@debtcollector.removals.removed_class("CommandError")
 class CommandError(BaseException):
     """Invalid usage of CLI."""
