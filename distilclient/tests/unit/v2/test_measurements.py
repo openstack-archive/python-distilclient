@@ -1,4 +1,7 @@
-# Copyright 2017 Catalyst IT Ltd.
+# Copyright 2010 Jacob Kaplan-Moss
+
+# Copyright 2011 OpenStack Foundation
+# All Rights Reserved.
 #
 #    Licensed under the Apache License, Version 2.0 (the "License"); you may
 #    not use this file except in compliance with the License. You may obtain
@@ -12,16 +15,11 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-from distilclient import base
+from distilclient.tests.unit import utils
 
 
-class UsageManager(base.Manager):
+class MeasurementsTest(utils.TestCase):
 
-    def list(self, project_id, start, end):
-        """Retrieve a list of usages.
-        :returns: A list of usages.
-        """
-        url = "/v2/usage?project_id={0}&start={1}&end={2}".format(project_id,
-                                                                  start,
-                                                                  end)
-        return self._list(url, "usage")
+    # Testcases for class Share
+    def setUp(self):
+        super(MeasurementsTest, self).setUp()
