@@ -15,13 +15,13 @@
 from distilclient import base
 
 
-class UsageManager(base.Manager):
+class MeasurementManager(base.Manager):
 
     def list(self, project_id, start, end):
-        """Retrieve a list of usages.
-        :returns: A list of usages.
+        """Retrieve a list of measurements.
+        :returns: A list of measurements.
         """
-        url = "/v2/usage?project_id={0}&start={1}&end={2}".format(project_id,
+        url = "/v2/measurements?project_id={0}&start={1}&end={2}".format(project_id,
                                                                   start,
                                                                   end)
-        return self._list(url, "usage")
+        return self._list(url, "measurements")

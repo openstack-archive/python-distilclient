@@ -185,7 +185,7 @@ class Client(object):
                                             http_log_debug=http_log_debug,
                                             api_version=self.api_version)
 
-        self.usage = usage.UsageManager(self)
+        self.measurements = measurements.MeasurementsManager(self)
 
         self._load_extensions(extensions)
 
