@@ -15,16 +15,16 @@
 from distilclient import base
 
 
-class MeasurementManager(base.Manager):
+class CostManager(base.Manager):
 
     def list(self, start, end, project_id=None):
-        """Retrieve a list of measurements.
-        :returns: A list of measurements.
+        """Retrieve a list of costs.
+        :returns: A list of costs.
         """
-        url = "/v2/measurements?start={1}&end={2}"
+        url = "/v2/costs?start={1}&end={2}"
         if project_id:
             url = url.format(start, end) + "&project_id=" + project_id
         else:
             url = url.format(start, end)
 
-        return self._list(url, "measurements")
+        return self._list(url, "costs")
