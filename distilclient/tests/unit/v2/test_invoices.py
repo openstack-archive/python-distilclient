@@ -22,11 +22,10 @@ from distilclient.v2 import client
 from distilclient import base
 
 
-class MeasurementsTest(utils.TestCase):
+class InvoicesTest(utils.TestCase):
 
     def setUp(self):
-        super(MeasurementsTest, self).setUp()
-
+        super(InvoicesTest, self).setUp()
         self.client = client.Client(session=client.session.Session(),
                                     api_version=distilclient.API_MAX_VERSION,
                                     distil_url=uuid.uuid4().hex, retries=3,
@@ -34,14 +33,14 @@ class MeasurementsTest(utils.TestCase):
 
     @mock.patch.object(base.Manager, '_list')
     def test_list_with_project_id(self, mock_list):
-        measurements = self.client.measurements.list('2017-1-1', '2018-2-1',
-                                                     'project_id')
-        mock_list.assert_called_with('/v2/measurements?start=2017-1-1'
+        invoices = self.client.invoices.list('2017-1-1', '2018-2-1',
+                                             'project_id')
+        mock_list.assert_called_with('/v2/invoices?start=2017-1-1'
                                      '&end=2018-2-1&project_id=project_id',
-                                     'measurements')        
+                                     'invoices')        
 
     @mock.patch.object(base.Manager, '_list')
     def test_list_without_project_id(self, mock_list):
-        measurements = self.client.measurements.list('2017-1-1', '2018-2-1')
-        mock_list.assert_called_with('/v2/measurements?start=2017-1-1'
-                                     '&end=2018-2-1', 'measurements')
+        invoices = self.client.invoices.list('2017-1-1', '2018-2-1')
+        mock_list.assert_called_with('/v2/invoices?start=2017-1-1'
+                                     '&end=2018-2-1', 'invoices')
