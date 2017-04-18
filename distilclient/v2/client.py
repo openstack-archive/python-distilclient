@@ -20,7 +20,9 @@ import six
 
 from distilclient.common import httpclient
 from distilclient import exceptions
+from distilclient.v2 import invoices
 from distilclient.v2 import measurements
+from distilclient.v2 import quotations
 
 
 class Client(object):
@@ -186,6 +188,8 @@ class Client(object):
                                             api_version=self.api_version)
 
         self.measurements = measurements.MeasurementManager(self)
+        self.invoices = invoices.InvoiceManager(self)
+        self.quotations = quotations.QuotationManager(self)
 
         self._load_extensions(extensions)
 
