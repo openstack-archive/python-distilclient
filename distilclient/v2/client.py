@@ -19,6 +19,7 @@ from keystoneclient import session
 import six
 
 from distilclient.common import httpclient
+from distilclient.v2 import costs
 from distilclient import exceptions
 from distilclient.v2 import measurements
 
@@ -186,6 +187,7 @@ class Client(object):
                                             api_version=self.api_version)
 
         self.measurements = measurements.MeasurementManager(self)
+        self.costs = costs.CostManager(self)
 
         self._load_extensions(extensions)
 
