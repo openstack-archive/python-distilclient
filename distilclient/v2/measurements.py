@@ -17,10 +17,14 @@ from distilclient import base
 
 class MeasurementManager(base.Manager):
 
-    def list(self, project_id, start, end):
+    def list(self, start, end, project_id=None):
         """Retrieve a list of measurements.
         :returns: A list of measurements.
         """
-        url = "/v2/measurements?project_id={0}&start={1}&end={2}"
-        url = url.format(project_id, start, end)
+        url = "/v2/measurements?start={1}&end={2}"
+        if project_id:
+            url = url.format(start, end) + "&project_id=" + project_id
+        else:
+            url = url.format(start, end)
+
         return self._list(url, "measurements")
