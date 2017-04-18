@@ -15,22 +15,22 @@
 from distilclient import base
 
 
-class MeasurementManager(base.Manager):
+class InvoiceManager(base.Manager):
 
     def list(self, start, end, project_id=None):
-        """Retrieve a list of measurements.
+        """Retrieve a list of invoices.
 
         :param start: Start date of the query
         :param end: End date of the query
         :param project_id: Project ID, there there is no project id given,
                            Distil will use the project ID from token.
-        :returns: A list of measurements.
+        :returns: A list of invoices.
         """
 
-        url = "/v2/measurements?start={0}&end={1}"
+        url = "/v2/invoices?start={0}&end={1}"
         if project_id:
             url = url.format(start, end) + "&project_id=" + project_id
         else:
             url = url.format(start, end)
 
-        return self._list(url, "measurements")
+        return self._list(url, "invoices")
