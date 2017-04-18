@@ -186,6 +186,7 @@ class Client(object):
                                             api_version=self.api_version)
 
         self.measurements = measurements.MeasurementManager(self)
+        self.costs = costs.CostManager(self)
 
         self._load_extensions(extensions)
 
