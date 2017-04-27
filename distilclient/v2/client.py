@@ -20,7 +20,7 @@ import six
 
 from distilclient.common import httpclient
 from distilclient import exceptions
-from distilclient.v2 import usage
+from distilclient.v2 import measurements
 
 
 class Client(object):
@@ -185,7 +185,7 @@ class Client(object):
                                             http_log_debug=http_log_debug,
                                             api_version=self.api_version)
 
-        self.usage = usage.UsageManager(self)
+        self.measurements = measurements.MeasurementManager(self)
 
         self._load_extensions(extensions)
 
