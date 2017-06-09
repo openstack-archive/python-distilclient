@@ -15,8 +15,8 @@ from oslo_utils import encodeutils
 from oslo_utils import uuidutils
 import six
 
-from distilclient.i18n import _
 from distilclient.common.apiclient import exceptions
+from distilclient.i18n import _
 
 
 def find_resource(manager, name_or_id, **find_args):
