@@ -14,7 +14,7 @@
 
 import requests
 from requests.exceptions import ConnectionError
-from urlparse import urljoin
+import six.moves.urllib.parse as urlparse
 
 from keystoneauth1 import adapter
 from keystoneauth1.identity import generic
@@ -138,7 +138,7 @@ class HTTPClient(object):
                     region_name=os_region_name)
 
     def collect_usage(self):
-        url = urljoin(self.endpoint, "collect_usage")
+        url = urlparse.urlunsplit([self.endpoint, "collect_usage"])
 
         headers = {"Content-Type": "application/json",
                    "X-Auth-Token": self.auth_token}
@@ -152,10 +152,10 @@ class HTTPClient(object):
             else:
                 return response.json()
         except ConnectionError as e:
-            print e
+            print(e)
 
     def last_collected(self):
-        url = urljoin(self.endpoint, "last_collected")
+        url = urlparse.urlunsplit([self.endpoint, "last_collected"])
 
         headers = {"Content-Type": "application/json",
                    "X-Auth-Token": self.auth_token}
@@ -169,7 +169,7 @@ class HTTPClient(object):
             else:
                 return response.json()
         except ConnectionError as e:
-            print e
+            print(e)
 
     def get_usage(self, tenant, start, end):
         return self._query_usage(tenant, start, end, "get_usage")
@@ -178,7 +178,7 @@ class HTTPClient(object):
         return self._query_usage(tenant, start, end, "get_rated")
 
     def _query_usage(self, tenant, start, end, endpoint):
-        url = urljoin(self.endpoint, endpoint)
+        url = urlparse.urlunsplit([self.endpoint, endpoint])
 
         headers = {"X-Auth-Token": self.auth_token}
 
@@ -197,4 +197,4 @@ class HTTPClient(object):
             else:
                 return response.json()
         except ConnectionError as e:
-            print e
+            print(e)
