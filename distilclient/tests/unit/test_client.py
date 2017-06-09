@@ -23,11 +23,6 @@ import distilclient.v2.client
 @ddt.ddt
 class ClientTest(utils.TestCase):
 
-    @mock.patch.object(distilclient.v1.client, 'Client')
-    def test_init_client_with_string_v1_version(self, mock_client):
-        mock_client('1', 'foo', auth_url='quuz')
-        mock_client.assert_called_once_with('1', 'foo', auth_url='quuz')
-
     @mock.patch.object(distilclient.v2.client, 'Client')
     def test_init_client_with_string_v2_version(self, mock_client):
         mock_client('2', 'foo', auth_url='quuz')
