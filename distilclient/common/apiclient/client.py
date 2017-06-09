@@ -36,8 +36,8 @@ except ImportError:
 from oslo_utils import importutils
 import requests
 
-from distilclient.i18n import _
 from distilclient.common.apiclient import exceptions
+from distilclient.i18n import _
 
 
 _logger = logging.getLogger(__name__)
