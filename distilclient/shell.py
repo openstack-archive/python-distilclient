@@ -12,14 +12,16 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-import os
-import json
-import sys
-from client import Client
+
 import exc
+import json
+import os
+import sys
 
 from keystoneauth1.identity import generic
 from keystoneauth1 import session
+
+from client import Client
 
 
 def main():
@@ -233,19 +235,19 @@ def main():
 
     if args.command == 'collect-usage':
         response = client.collect_usage()
-        print json.dumps(response, indent=2)
+        print(json.dumps(response, indent=2))
 
     if args.command == 'last-collected':
         response = client.last_collected()
-        print json.dumps(response, indent=2)
+        print(json.dumps(response, indent=2))
 
     if args.command == 'get-usage':
         response = client.get_usage(args.project, args.start, args.end)
-        print json.dumps(response, indent=2)
+        print(json.dumps(response, indent=2))
 
     if args.command == 'get-rated':
         response = client.get_rated(args.project, args.start, args.end)
-        print json.dumps(response, indent=2)
+        print(json.dumps(response, indent=2))
 
 
 if __name__ == '__main__':

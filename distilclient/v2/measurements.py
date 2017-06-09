@@ -19,6 +19,7 @@ class MeasurementManager(base.Manager):
 
     def list(self, project_id, start, end):
         """Retrieve a list of measurements.
+
         :returns: A list of measurements.
         """
         url = "/v2/measurements?project_id={0}&start={1}&end={2}"
