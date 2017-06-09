@@ -30,8 +30,8 @@ from oslo_utils import strutils
 import six
 from six.moves.urllib import parse
 
-from distilclient.i18n import _
 from distilclient.common.apiclient import exceptions
+from distilclient.i18n import _
 
 
 def getid(obj):
