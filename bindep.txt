@@ -20,3 +20,7 @@ python3.4 [platform:ubuntu-trusty]
 python3.5 [platform:ubuntu-xenial]
 python34-devel [platform:centos]
 uuid-dev [platform:dpkg]
+
+#Required for cryptography lib
+libssl-dev [platform:dpkg]
+openssl-devel [platform:rpm]
