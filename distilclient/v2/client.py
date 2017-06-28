@@ -21,8 +21,10 @@ import six
 from distilclient.common import httpclient
 from distilclient import exceptions
 from distilclient.v2 import credits
+from distilclient.v2 import health
 from distilclient.v2 import invoices
 from distilclient.v2 import measurements
+from distilclient.v2 import products
 from distilclient.v2 import quotations
 
 
@@ -192,6 +194,8 @@ class Client(object):
         self.invoices = invoices.InvoiceManager(self)
         self.quotations = quotations.QuotationManager(self)
         self.credits = credits.CreditManager(self)
+        self.products = products.ProductManager(self)
+        self.health = health.HealthManager(self)
 
         self._load_extensions(extensions)
 
