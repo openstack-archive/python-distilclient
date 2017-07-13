@@ -17,20 +17,15 @@ from distilclient import base
 
 class QuotationManager(base.Manager):
 
-    def list(self, start, end, project_id=None):
+    def list(self, project_id=None):
         """Retrieve a list of quotations.
 
-        :param start: Start date of the query
-        :param end: End date of the query
         :param project_id: Project ID, there there is no project id given,
                            Distil will use the project ID from token.
         :returns: A list of quotations.
         """
 
-        url = "/v2/quotations?start={0}&end={1}"
+        url = "/v2/quotations"
         if project_id:
-            url = url.format(start, end) + "&project_id=" + project_id
-        else:
-            url = url.format(start, end)
-
+            url = url + "?project_id=" + project_id
         return self._list(url, "quotations")
