@@ -12,6 +12,7 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+import datetime
 from distilclient import base
 
 
@@ -26,6 +27,10 @@ class InvoiceManager(base.Manager):
                            Distil will use the project ID from token.
         :returns: A list of invoices.
         """
+        if isinstance(start, datetime.datetime):
+            start = start.strftime('%Y-%m-%d')
+        if isinstance(end, datetime.datetime):
+            end = end.strftime('%Y-%m-%d')
 
         url = "/v2/invoices?start={0}&end={1}"
         if project_id:
