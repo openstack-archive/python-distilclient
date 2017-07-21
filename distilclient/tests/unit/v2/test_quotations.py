@@ -34,10 +34,12 @@ class QuotationsTest(utils.TestCase):
     @mock.patch.object(base.Manager, '_list')
     def test_list_with_project_id(self, mock_list):
         self.client.quotations.list('project_id')
-        mock_list.assert_called_with('/v2/quotations?project_id=project_id',
+        mock_list.assert_called_with('/v2/quotations?detailed=False&'
+                                     'project_id=project_id',
                                      'quotations')
 
     @mock.patch.object(base.Manager, '_list')
     def test_list_without_project_id(self, mock_list):
         self.client.quotations.list()
-        mock_list.assert_called_with('/v2/quotations', 'quotations')
+        mock_list.assert_called_with('/v2/quotations?detailed=False',
+                                     'quotations')

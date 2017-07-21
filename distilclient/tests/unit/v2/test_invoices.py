@@ -36,11 +36,13 @@ class InvoicesTest(utils.TestCase):
         self.client.invoices.list('2017-1-1', '2018-2-1',
                                   'project_id')
         mock_list.assert_called_with('/v2/invoices?start=2017-1-1'
-                                     '&end=2018-2-1&project_id=project_id',
+                                     '&end=2018-2-1&detailed=False&'
+                                     'project_id=project_id',
                                      'invoices')
 
     @mock.patch.object(base.Manager, '_list')
     def test_list_without_project_id(self, mock_list):
         self.client.invoices.list('2017-1-1', '2018-2-1')
         mock_list.assert_called_with('/v2/invoices?start=2017-1-1'
-                                     '&end=2018-2-1', 'invoices')
+                                     '&end=2018-2-1&detailed=False',
+                                     'invoices')

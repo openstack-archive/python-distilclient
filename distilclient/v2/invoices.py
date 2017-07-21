@@ -17,20 +17,23 @@ from distilclient import base
 
 class InvoiceManager(base.Manager):
 
-    def list(self, start, end, project_id=None):
+    def list(self, start, end, project_id=None, detailed=False):
         """Retrieve a list of invoices.
 
         :param start: Start date of the query
         :param end: End date of the query
         :param project_id: Project ID, there there is no project id given,
                            Distil will use the project ID from token.
+        :param detailed: Default value is False, indicate if inlucding detailed
+                         usage info in the response.
         :returns: A list of invoices.
         """
 
-        url = "/v2/invoices?start={0}&end={1}"
+        url = "/v2/invoices?start={0}&end={1}&detailed={2}"
         if project_id:
-            url = url.format(start, end) + "&project_id=" + project_id
+            url = (url.format(start, end, detailed) +
+                   "&project_id=" + project_id)
         else:
-            url = url.format(start, end)
+            url = url.format(start, end, detailed)
 
         return self._list(url, "invoices")

@@ -17,15 +17,17 @@ from distilclient import base
 
 class QuotationManager(base.Manager):
 
-    def list(self, project_id=None):
+    def list(self, project_id=None, detailed=False):
         """Retrieve a list of quotations.
 
         :param project_id: Project ID, there there is no project id given,
                            Distil will use the project ID from token.
+        :param detailed: Default value is False, indicate if inlucding detailed
+                         usage info in the response.
         :returns: A list of quotations.
         """
 
-        url = "/v2/quotations"
+        url = "/v2/quotations?detailed=" + str(detailed)
         if project_id:
-            url = url + "?project_id=" + project_id
+            url = url + "&project_id=" + project_id
         return self._list(url, "quotations")
