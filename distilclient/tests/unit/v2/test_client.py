@@ -105,7 +105,7 @@ class ClientTest(utils.TestCase):
                           api_version=distilclient.API_MAX_VERSION,
                           region_name='FakeRegion')
         self.assertTrue(client.Client._get_keystone_client.called)
-        kc.service_catalog.get_endpoints.assert_called_with('rating')
+        kc.service_catalog.get_endpoints.assert_called_with('ratingv2')
 
     @mock.patch.object(client.Client, '_get_keystone_client', mock.Mock())
     def test_regions_with_same_name(self):

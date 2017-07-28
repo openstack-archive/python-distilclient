@@ -57,7 +57,7 @@ class Client(object):
                  project_id=None, auth_url=None, insecure=False, timeout=None,
                  tenant_id=None, project_name=None, region_name=None,
                  endpoint_type='publicURL', extensions=None,
-                 service_type='rating', service_name=None,
+                 service_type='ratingv2', service_name=None,
                  retries=None, http_log_debug=False, input_auth_token=None,
                  session=None, auth=None, cacert=None,
                  distil_url=None, user_agent='python-distilclient',
