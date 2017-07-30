@@ -1,0 +1,9 @@
+Code-Review+2: Feilong Wang <flwang@catalyst.net.nz>
+Code-Review+2: Adrian Turjak <adriant@catalyst.net.nz>
+Workflow+1: Adrian Turjak <adriant@catalyst.net.nz>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Sun, 30 Jul 2017 23:44:21 +0000
+Reviewed-on: https://review.openstack.org/486504
+Project: openstack/python-distilclient
+Branch: refs/heads/master
