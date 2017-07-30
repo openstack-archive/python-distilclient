@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
 import mock
 
 import distilclient
@@ -48,3 +49,13 @@ class InvoicesTest(utils.TestCase):
         mock_list.assert_called_with('/v2/invoices?start=2017-1-1'
                                      '&end=2018-2-1&detailed=False',
                                      'invoices')
+
+    @mock.patch.object(base.Manager, '_list')
+    def test_list_with_datetime(self, mock_list):
+        start = datetime.date(year=2017, day=1, month=1)
+        end = datetime.date(year=2018, day=1, month=2)
+        self.client.invoices.list(start, end,
+                                  'project_id')
+        mock_list.assert_called_with('/v2/invoices?start=2017-01-01'
+                                     '&end=2018-02-01&detailed=False'
+                                     '&project_id=project_id', 'invoices')
