@@ -14,12 +14,13 @@
 # limitations under the License.
 
 import mock
-import uuid
 
 import distilclient
 from distilclient import base
 from distilclient.tests.unit import utils
 from distilclient.v2 import client
+
+from oslo_utils import uuidutils
 
 
 class ProductsTest(utils.TestCase):
@@ -28,7 +29,8 @@ class ProductsTest(utils.TestCase):
         super(ProductsTest, self).setUp()
         self.client = client.Client(session=client.session.Session(),
                                     api_version=distilclient.API_MAX_VERSION,
-                                    distil_url=uuid.uuid4().hex, retries=3,
+                                    distil_url=uuidutils.generate_uuid(),
+                                    retries=3,
                                     input_auth_token='token')
 
     @mock.patch.object(base.Manager, '_list')

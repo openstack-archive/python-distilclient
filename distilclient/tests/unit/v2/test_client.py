@@ -14,7 +14,6 @@
 # limitations under the License.
 
 import ddt
-import uuid
 
 import mock
 
@@ -22,6 +21,8 @@ import distilclient
 from distilclient import exceptions
 from distilclient.tests.unit import utils
 from distilclient.v2 import client
+
+from oslo_utils import uuidutils
 
 
 @ddt.ddt
@@ -37,7 +38,7 @@ class ClientTest(utils.TestCase):
     def test_adapter_properties(self):
         # sample of properties, there are many more
         retries = 3
-        base_url = uuid.uuid4().hex
+        base_url = uuidutils.generate_uuid()
 
         s = client.session.Session()
         c = client.Client(session=s,
@@ -55,7 +56,7 @@ class ClientTest(utils.TestCase):
 
     def test_auth_via_token_and_session(self):
         s = client.session.Session()
-        base_url = uuid.uuid4().hex
+        base_url = uuidutils.generate_uuid()
         c = client.Client(input_auth_token='token',
                           distil_url=base_url, session=s,
                           api_version=distilclient.API_MAX_VERSION)
@@ -64,7 +65,7 @@ class ClientTest(utils.TestCase):
         self.assertIsNone(c.keystone_client)
 
     def test_auth_via_token(self):
-        base_url = uuid.uuid4().hex
+        base_url = uuidutils.generate_uuid()
 
         c = client.Client(input_auth_token='token',
                           distil_url=base_url,
