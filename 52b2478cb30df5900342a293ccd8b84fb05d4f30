@@ -1,0 +1,9 @@
+Code-Review+2: Feilong Wang <flwang@catalyst.net.nz>
+Code-Review+2: Lingxian Kong <anlin.kong@gmail.com>
+Workflow+1: Lingxian Kong <anlin.kong@gmail.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Mon, 31 Jul 2017 01:51:45 +0000
+Reviewed-on: https://review.openstack.org/480874
+Project: openstack/python-distilclient
+Branch: refs/heads/master
