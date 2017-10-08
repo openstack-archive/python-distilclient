@@ -13,7 +13,8 @@
 # under the License.
 
 from collections import namedtuple
-
+import datetime
+import json
 
 from osc_lib.command import command
 from osc_lib import utils
@@ -78,3 +79,94 @@ class ListProducts(command.Lister):
                                                      p.keys())(**p), columns)
                 for p in products)
         return (columns, rows)
+
+
+class ListQuotations(command.Command):
+    """Show current month quotation.
+
+    NOTE: The quotations API only shows data from current region for current
+          month.
+    """
+
+    _description = _("List available quotations")
+    log = logging.getLogger(__name__ + ".ListQuotations")
+
+    def get_parser(self, prog_name):
+        parser = super(ListQuotations, self).get_parser(prog_name)
+        parser.add_argument(
+            "--detailed",
+            action="store_true",
+            help="Whether get the details of current month quotation.")
+
+        parser.add_argument(
+            "--project-id",
+            help="Only admin user can specify the project ID.")
+
+        parser.add_argument(
+            "--original-json",
+            action="store_true",
+            help="Whether print out the original JSON response directly.")
+
+        return parser
+
+    def take_action(self, parsed_args):
+        kwargs = {}
+        if parsed_args.detailed is not None:
+            kwargs["detailed"] = parsed_args.detailed
+
+        if parsed_args.project_id is not None:
+            kwargs["project_id"] = parsed_args.project_id
+
+        data = self.app.client_manager.rating.quotations.list(**kwargs)
+
+        print(json.dumps(data, indent=4, sort_keys=True))
+
+
+class ListInvoices(command.Command):
+    """List available invoices. """
+
+    _description = _("List available invoices")
+    log = logging.getLogger(__name__ + ".ListInvoices")
+
+    def get_parser(self, prog_name):
+        parser = super(ListInvoices, self).get_parser(prog_name)
+        parser.add_argument(
+            "--start",
+            required=True,
+            help="The start date of time range to get invoices.")
+
+        parser.add_argument(
+            "--end",
+            help="The end date of time range to get invoices.")
+
+        parser.add_argument(
+            "--detailed",
+            action="store_true",
+            help="Whether get the details of current month quotation.")
+
+        parser.add_argument(
+            "--project-id",
+            help="Only admin user can specify the project ID.")
+
+        return parser
+
+    def take_action(self, parsed_args):
+        kwargs = {}
+
+        if parsed_args.start is not None:
+            kwargs["start"] = parsed_args.start
+
+        if parsed_args.end is not None:
+            kwargs["end"] = parsed_args.end
+        else:
+            kwargs["end"] = datetime.datetime.now()
+
+        if parsed_args.detailed is not None:
+            kwargs["detailed"] = parsed_args.detailed
+
+        if parsed_args.project_id is not None:
+            kwargs["project_id"] = parsed_args.project_id
+
+        data = self.app.client_manager.rating.invoices.list(**kwargs)
+
+        print(json.dumps(data, indent=4, sort_keys=True))
