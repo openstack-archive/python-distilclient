@@ -158,7 +158,7 @@ class Client(object):
         if session and not distil_url:
             distil_url = self.keystone_client.session.get_endpoint(
                 auth, interface=endpoint_type,
-                service_type=service_type)
+                service_type=service_type, region_name=region_name)
         elif not distil_url:
             catalog = self.keystone_client.service_catalog.get_endpoints(
                 service_type)
