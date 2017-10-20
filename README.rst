@@ -34,7 +34,7 @@ the command to do it:
 
   git push gerrit 0.2.0
 
-4. Check the build status on http://status.openstack.org/zuul/ by search
+4. Check the build status on http://zuulv3.openstack.org/ by search
 distilclient.
 
 5. Release wil be available when openstack/python-distilclient disappear,
