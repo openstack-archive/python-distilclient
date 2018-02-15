@@ -4,8 +4,8 @@ Client Library for OpenStack Rating Service (Distil)
 How to release code/tarballs/pypi
 =================================
 
-1. Add release tag, for example, “0.2.0” with the following description:
-“Release disitilclient version 0.2.0”; it should be signed by your personal
+1. Add release tag, for example, "0.2.0" with the following description:
+"Release disitilclient version 0.2.0"; it should be signed by your personal
 gpg key:
 
 .. code-block:: shell
@@ -13,7 +13,7 @@ gpg key:
   git tag -s 0.2.0
 
 
-2. Check that tag is in the repo: “git tag -v 0.2.0”, you should see something
+2. Check that tag is in the repo: "git tag -v 0.2.0", you should see something
 like:
 
 .. code-block:: shell
