@@ -40,7 +40,7 @@ distilclient.
 5. Release wil be available when openstack/python-distilclient disappear,
 check the following links for the right versions:
 
-  * https://pypi.python.org/pypi/python-distilclient/
+  * https://pypi.org/project/python-distilclient/
   * http://tarballs.openstack.org/python-distilclient/
 
-6. Check pypi release on https://pypi.python.org/pypi/python-distilclient
+6. Check pypi release on https://pypi.org/project/python-distilclient
