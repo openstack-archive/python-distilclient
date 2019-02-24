@@ -15,7 +15,7 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-import json
+from oslo_serialization import jsonutils
 
 from distilclient import exc
 from distilclient.i18n import _
@@ -55,7 +55,7 @@ def split_and_deserialize(string):
         raise exc.CommandError(_('Attributes must be a list of '
                                  'PATH=VALUE not "%s"') % string)
     try:
-        value = json.loads(value)
+        value = jsonutils.loads(value)
     except ValueError:
         pass
 

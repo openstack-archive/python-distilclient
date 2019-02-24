@@ -28,11 +28,7 @@ OpenStack Client interface. Handles the REST calls and responses.
 import logging
 import time
 
-try:
-    import simplejson as json
-except ImportError:
-    import json
-
+from oslo_serialization import jsonutils
 from oslo_utils import importutils
 import requests
 
@@ -132,7 +128,7 @@ class HTTPClient(object):
     def serialize(self, kwargs):
         if kwargs.get('json') is not None:
             kwargs['headers']['Content-Type'] = 'application/json'
-            kwargs['data'] = json.dumps(kwargs['json'])
+            kwargs['data'] = jsonutils.dumps(kwargs['json'])
         try:
             del kwargs['json']
         except KeyError:

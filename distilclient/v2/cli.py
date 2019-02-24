@@ -14,11 +14,11 @@
 
 from collections import namedtuple
 import datetime
-import json
 
 from osc_lib.command import command
 from osc_lib import utils
 from oslo_log import log as logging
+from oslo_serialization import jsonutils
 
 from distilclient.i18n import _
 
@@ -119,7 +119,7 @@ class ListQuotations(command.Command):
 
         data = self.app.client_manager.rating.quotations.list(**kwargs)
 
-        print(json.dumps(data, indent=4, sort_keys=True))
+        print(jsonutils.dumps(data, indent=4, sort_keys=True))
 
 
 class ListInvoices(command.Command):
@@ -169,4 +169,4 @@ class ListInvoices(command.Command):
 
         data = self.app.client_manager.rating.invoices.list(**kwargs)
 
-        print(json.dumps(data, indent=4, sort_keys=True))
+        print(jsonutils.dumps(data, indent=4, sort_keys=True))

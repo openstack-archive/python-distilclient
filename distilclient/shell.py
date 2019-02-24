@@ -14,9 +14,10 @@
 
 
 import exc
-import json
 import os
 import sys
+
+from oslo_serialization import jsonutils
 
 from keystoneauth1.identity import generic
 from keystoneauth1 import session
@@ -235,19 +236,19 @@ def main():
 
     if args.command == 'collect-usage':
         response = client.collect_usage()
-        print(json.dumps(response, indent=2))
+        print(jsonutils.dumps(response, indent=2))
 
     if args.command == 'last-collected':
         response = client.last_collected()
-        print(json.dumps(response, indent=2))
+        print(jsonutils.dumps(response, indent=2))
 
     if args.command == 'get-usage':
         response = client.get_usage(args.project, args.start, args.end)
-        print(json.dumps(response, indent=2))
+        print(jsonutils.dumps(response, indent=2))
 
     if args.command == 'get-rated':
         response = client.get_rated(args.project, args.start, args.end)
-        print(json.dumps(response, indent=2))
+        print(jsonutils.dumps(response, indent=2))
 
 
 if __name__ == '__main__':
